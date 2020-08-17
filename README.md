@@ -34,7 +34,7 @@ Next, you need to author the Models needed for your API. Make sure that each mod
 
 ## Database Management
 
-You will be using the [Official Bangazon SQL](./bangazon.sql) file to create your database. Create the database using SSMS or the SQL Server Object Explorer in Visual Studio, create a new SQL script for that database, copy the contents of the SQL file into your script, and then execute it. Every team member will need to build the database on their own computer. To avoid merge conflicts in your `appsettings.json` file, *make sure you all name your database the same thing*.
+You will be using the [Official Bangazon SQL](https://github.com/NewForce-at-Mountwest/bangazon-inc/blob/master/book-2-platform-api/chapters/sql/bangazon.sql) file to create your database. Create the database using SSMS or the SQL Server Object Explorer in Visual Studio, create a new SQL script for that database, copy the contents of the SQL file into your script, and then execute it. Every team member will need to build the database on their own computer. To avoid merge conflicts in your `appsettings.json` file, *make sure you all name your database the same thing*.
 
 ## Controllers
 
