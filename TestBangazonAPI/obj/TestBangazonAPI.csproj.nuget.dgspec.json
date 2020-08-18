@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj": {}
+    "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj": {
+    "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj",
+        "projectUniqueName": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj",
         "projectName": "BangazonAPI",
-        "projectPath": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj",
-        "packagesPath": "C:\\Users\\Mike\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\obj\\",
+        "projectPath": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj",
+        "packagesPath": "C:\\Users\\NewForce\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Mike\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\NewForce\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -61,21 +61,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj": {
+    "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj",
+        "projectUniqueName": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj",
         "projectName": "TestBangazonAPI",
-        "projectPath": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj",
-        "packagesPath": "C:\\Users\\Mike\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\obj\\",
+        "projectPath": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\TestBangazonAPI.csproj",
+        "packagesPath": "C:\\Users\\NewForce\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\TestBangazonAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Mike\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\NewForce\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -88,8 +88,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj": {
-                "projectPath": "C:\\Users\\Mike\\source\\repos\\BangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj"
+              "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj": {
+                "projectPath": "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypseclams\\BangazonAPI\\BangazonAPI.csproj"
               }
             }
           }
@@ -154,7 +154,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
