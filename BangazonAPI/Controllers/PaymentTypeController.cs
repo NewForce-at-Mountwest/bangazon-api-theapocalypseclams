@@ -109,22 +109,127 @@ namespace BangazonAPI.Controllers
             }
         }
 
-        // POST api/<PaymentTypeController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] PaymentType payment)
         {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO PaymentType (AcctNumber, Name, CustomerId)
+                                        OUTPUT INSERTED.Id
+                                        VALUES (@acctNum, @name, @custId)";
+                    cmd.Parameters.Add(new SqlParameter("@acctNum", payment.AcctNumber));
+                    cmd.Parameters.Add(new SqlParameter("@name", payment.Name));
+                    cmd.Parameters.Add(new SqlParameter("@custId", payment.CustomerId));
+
+                    int newId = (int)cmd.ExecuteScalar();
+                    payment.Id = newId;
+                    return CreatedAtRoute("GetPaymentType", new { id = newId }, payment);
+                }
+            }
         }
 
-        // PUT api/<PaymentTypeController>/5
+        //PUT method needs ID to update and New information to change
+        //204NoContent means we aren't getting anything back
+        //Not Found is a 404 Status
+        //CoffeeExists is a method WE wrote to check to see if the coffee id is there or not - returns boolean
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PaymentType payment)
         {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"UPDATE PaymentType
+                                            SET AcctNumber = @acctNum,
+                                                Name = @name,
+                                                CustomerId = @custId
+                                            WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@acctNum", payment.AcctNumber));
+                        cmd.Parameters.Add(new SqlParameter("@name", payment.Name));
+                        cmd.Parameters.Add(new SqlParameter("@custId", payment.CustomerId));
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return new StatusCodeResult(StatusCodes.Status204NoContent);
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!PaymentTypeExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
-        // DELETE api/<PaymentTypeController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"DELETE FROM PaymentType WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return new StatusCodeResult(StatusCodes.Status204NoContent);
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!PaymentTypeExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private bool PaymentTypeExists(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, AcctNumber, Name, CustomerId
+                        FROM PaymentType
+                        WHERE Id = @id";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    return reader.Read();
+                }
+            }
         }
     }
 }
