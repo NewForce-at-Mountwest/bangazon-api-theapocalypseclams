@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("BangazonAPI", "C:\\Users\\NewForce\\workspace\\backend\\APIs\\bangazonAPI\\bangazon-api-theapocalypsecl" +
     "ams\\BangazonAPI", "BangazonAPI.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("TestBangazonAPI")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("TestBangazonAPI")]
