@@ -46,7 +46,7 @@ namespace BangazonAPI
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             ProductTypeId = reader.GetInt32(reader.GetOrdinal("ProductTypeId")),
                             CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                            Price = reader.GetInt32(reader.GetOrdinal("Price")),
+                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
                             Description = reader.GetString(reader.GetOrdinal("Description")),
                             Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"))
@@ -129,8 +129,8 @@ namespace BangazonAPI
                                             SET ProductTypeId = @productTypeId,
                                                 CustomerId = @customerId,
                                                 Price = @price,
-                                                Title = @title,
-                                                Description = @description
+                                                Title = '@title',
+                                                Description ='@description',
                                                 Quantity = @quantity
                                             WHERE Id = @id";
                         cmd.Parameters.Add(new SqlParameter("@productTypeId", product.ProductTypeId));

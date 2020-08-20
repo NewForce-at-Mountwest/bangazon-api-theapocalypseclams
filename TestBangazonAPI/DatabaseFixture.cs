@@ -10,13 +10,14 @@ namespace TestBangazonAPI
     {
         private readonly string ConnectionString = @$"Server=localhost\SQLEXPRESS;Database=BangazonAPI;Trusted_Connection=True;";
         public Product TestProduct { get; set; }
+        public Product TestEditProduct { get; set; }
         public DatabaseFixture()
         {
             Product newProduct = new Product
             {
                 ProductTypeId = 1,
                 CustomerId = 1,
-                Price = 0.99,
+                Price = 0.99m,
                 Title = "Test Product",
                 Description = "Test Product Description",
                 Quantity = 1
@@ -32,6 +33,30 @@ namespace TestBangazonAPI
                     int newId = (int)cmd.ExecuteScalar();
                     newProduct.Id = newId;
                     TestProduct = newProduct;
+                }
+            }
+
+            //This Product is to test the Edit method
+            Product newEditProduct = new Product
+            {
+                ProductTypeId = 2,
+                CustomerId = 2,
+                Price = 1.99m,
+                Title = "Test Product Edit",
+                Description = "Test Product Description for Edit",
+                Quantity = 1
+            };
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @$"INSERT INTO Product (ProductTypeId, CustomerId, Price, Title, Description, Quantity)
+                                        OUTPUT INSERTED.Id
+                                        VALUES ('{newEditProduct.ProductTypeId}', '{newEditProduct.CustomerId}','{newEditProduct.Price}', '{newEditProduct.Title}','{newEditProduct.Description}', '{newEditProduct.Quantity}')";
+                    int newId = (int)cmd.ExecuteScalar();
+                    newEditProduct.Id = newId;
+                    TestEditProduct = newEditProduct;
                 }
             }
         }
