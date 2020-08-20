@@ -134,7 +134,7 @@ namespace BangazonAPI.Controllers
         //PUT method needs ID to update and New information to change
         //204NoContent means we aren't getting anything back
         //Not Found is a 404 Status
-        //CoffeeExists is a method WE wrote to check to see if the coffee id is there or not - returns boolean
+        //PaymentTypeExists is a method WE wrote to check to see if the PaymentType id is there or not - returns boolean
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PaymentType payment)

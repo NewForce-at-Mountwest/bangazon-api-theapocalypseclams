@@ -19,14 +19,14 @@ namespace TestBangazonAPI
             PaymentType newType = new PaymentType
             {
                 AcctNumber = "9876543210",
-                Name = "TEST",
+                Name = "integration test payment type",
                 CustomerId = 2
             };
 
             PaymentType editType = new PaymentType
             {
                 AcctNumber = "6789012345",
-                Name = "FOREDIT",
+                Name = "integration test payment type",
                 CustomerId = 2
             };
 
@@ -63,7 +63,7 @@ namespace TestBangazonAPI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @$"DELETE FROM PaymentType WHERE Name='TEST'";
+                    cmd.CommandText = @$"DELETE FROM PaymentType WHERE Name like '%integration test payment type%'";
                     cmd.ExecuteNonQuery();
                 }
             }

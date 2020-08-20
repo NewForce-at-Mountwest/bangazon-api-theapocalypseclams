@@ -48,14 +48,14 @@ namespace TestBangazonAPI
                 PaymentType newType = new PaymentType()
                 {
                     AcctNumber = "5432109876",
-                    Name = "NewPayType",
+                    Name = "integration test payment type",
                     CustomerId = 2
                 };
-                string jsonCoffee = JsonConvert.SerializeObject(newType);
+                string jsonPaymentType = JsonConvert.SerializeObject(newType);
 
                 // Act
                 HttpResponseMessage response = await client.PostAsync("/api/PaymentType",
-                    new StringContent(jsonCoffee, Encoding.UTF8, "application/json"));
+                    new StringContent(jsonPaymentType, Encoding.UTF8, "application/json"));
                 string responseBody = await response.Content.ReadAsStringAsync();
                 PaymentType paymentTypeResponse = JsonConvert.DeserializeObject<PaymentType>(responseBody);
 
@@ -76,7 +76,7 @@ namespace TestBangazonAPI
                 string responseBody = await response.Content.ReadAsStringAsync();
                 PaymentType singleType = JsonConvert.DeserializeObject<PaymentType>(responseBody);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                //Assert.Equal(fixture.TestCoffee.Title, singleCoffee.Title);
+                
             }
         }
         [Fact]
@@ -88,13 +88,13 @@ namespace TestBangazonAPI
                 PaymentType editedType = new PaymentType()
                 {
                     AcctNumber = "6789012345",
-                    Name = "EDITED PaymentType",
+                    Name = "EDITED integration test payment type",
                     CustomerId = 2
                 };
                 // Act
-                string jsonCoffee = JsonConvert.SerializeObject(editedType);
+                string jsonPaymentType = JsonConvert.SerializeObject(editedType);
                 HttpResponseMessage response = await client.PutAsync($"/api/paymenttype/{fixture.EditType.Id}",
-                    new StringContent(jsonCoffee, Encoding.UTF8, "application/json"));
+                    new StringContent(jsonPaymentType, Encoding.UTF8, "application/json"));
                 // Assert
                 Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
