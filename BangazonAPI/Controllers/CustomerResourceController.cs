@@ -1,6 +1,8 @@
 ﻿using BangazonAPI.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -27,7 +29,8 @@ namespace BangazonAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        //TODO: Add test method for Get()
+        public IActionResult Get()
         {
             using (SqlConnection conn = Connection)
             {
@@ -56,153 +59,124 @@ namespace BangazonAPI.Controllers
             }
         }
 
-        //[HttpGet("{id}", Name = "GetCoffee")]
-        //public async Task<IActionResult> Get([FromRoute] int id)
-        //{
-        //    using (SqlConnection conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (SqlCommand cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                SELECT
-        //                    Id, Title, BeanType
-        //                FROM Coffee
-        //                WHERE Id = @id";
-        //            cmd.Parameters.Add(new SqlParameter("@id", id));
-        //            SqlDataReader reader = cmd.ExecuteReader();
+        [HttpGet("{id}", Name = "GetCustomer")]
+        public IActionResult Get([FromRoute] int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT
+                            Id, FirstName, LastName
+                        FROM Customer
+                        WHERE Id = @id";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-        //            Coffee coffee = null;
+                    Customer customer = null;
 
-        //            if (reader.Read())
-        //            {
-        //                coffee = new Coffee
-        //                {
-        //                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
-        //                    Title = reader.GetString(reader.GetOrdinal("Title")),
-        //                    BeanType = reader.GetString(reader.GetOrdinal("BeanType"))
-        //                };
-        //            }
-        //            reader.Close();
+                    if (reader.Read())
+                    {
+                        customer = new Customer
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                        };
+                    }
+                    reader.Close();
 
-        //            return Ok(coffee);
-        //        }
-        //    }
-        //}
+                    return Ok(customer);
+                }
+            }
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] Coffee coffee)
-        //{
-        //    using (SqlConnection conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (SqlCommand cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"INSERT INTO Coffee (Title, BeanType)
-        //                                OUTPUT INSERTED.Id
-        //                                VALUES (@title, @beanType)";
-        //            cmd.Parameters.Add(new SqlParameter("@title", coffee.Title));
-        //            cmd.Parameters.Add(new SqlParameter("@beanType", coffee.BeanType));
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Customer customer)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Customer (FirstName, LastName, CreationDate, LastActiveDate)
+                                        OUTPUT INSERTED.Id
+                                        VALUES (@FirstName, @LastName, @CreationDate, @LastActiveDate)";
+                    cmd.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                    cmd.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                    cmd.Parameters.Add(new SqlParameter("@CreationDate", customer.CreationDate));
+                    cmd.Parameters.Add(new SqlParameter("@LastActiveDate", customer.LastActiveDate));
 
-        //            int newId = (int)cmd.ExecuteScalar();
-        //            coffee.Id = newId;
-        //            return CreatedAtRoute("GetCoffee", new { id = newId }, coffee);
-        //        }
-        //    }
-        //}
+                    int newId = (int)cmd.ExecuteScalar();
+                    customer.Id = newId;
+                    return CreatedAtRoute("GetCustomer", new { id = newId }, customer);
+                }
+            }
+        }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Coffee coffee)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = Connection)
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = conn.CreateCommand())
-        //            {
-        //                cmd.CommandText = @"UPDATE Coffee
-        //                                    SET Title = @title,
-        //                                        BeanType = @beanType
-        //                                    WHERE Id = @id";
-        //                cmd.Parameters.Add(new SqlParameter("@title", coffee.Title));
-        //                cmd.Parameters.Add(new SqlParameter("@beanType", coffee.BeanType));
-        //                cmd.Parameters.Add(new SqlParameter("@id", id));
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Customer customer)
+        {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"UPDATE Customer
+                                            SET FirstName = @FirstName,
+                                                LastName = @LastName,
+                                                CreationDate = @CreationDate,
+                                                LastActiveDate = @LastActiveDate
+                                            WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                        cmd.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                        cmd.Parameters.Add(new SqlParameter("@CreationDate", customer.CreationDate));
+                        cmd.Parameters.Add(new SqlParameter("@LastActiveDate", customer.LastActiveDate));
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
-        //                int rowsAffected = cmd.ExecuteNonQuery();
-        //                if (rowsAffected > 0)
-        //                {
-        //                    return new StatusCodeResult(StatusCodes.Status204NoContent);
-        //                }
-        //                throw new Exception("No rows affected");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        if (!CoffeeExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-        //}
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return new StatusCodeResult(StatusCodes.Status204NoContent);
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!CustomerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete([FromRoute] int id)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = Connection)
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = conn.CreateCommand())
-        //            {
-        //                cmd.CommandText = @"DELETE FROM Coffee WHERE Id = @id";
-        //                cmd.Parameters.Add(new SqlParameter("@id", id));
+        private bool CustomerExists(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, FirstName, LastName, CreationDate, LastActiveDate
+                        FROM Customer
+                        WHERE Id = @id";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
 
-        //                int rowsAffected = cmd.ExecuteNonQuery();
-        //                if (rowsAffected > 0)
-        //                {
-        //                    return new StatusCodeResult(StatusCodes.Status204NoContent);
-        //                }
-        //                throw new Exception("No rows affected");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        if (!CoffeeExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-        //}
-
-        //private bool CoffeeExists(int id)
-        //{
-        //    using (SqlConnection conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (SqlCommand cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                SELECT Id, Title, BeanType
-        //                FROM Coffee
-        //                WHERE Id = @id";
-        //            cmd.Parameters.Add(new SqlParameter("@id", id));
-
-        //            SqlDataReader reader = cmd.ExecuteReader();
-        //            return reader.Read();
-        //        }
-        //    }
-        //}
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    return reader.Read();
+                }
+            }
+        }
     }
 }
