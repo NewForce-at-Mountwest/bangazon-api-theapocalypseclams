@@ -65,7 +65,7 @@ namespace TestBangazonAPI
         {
             using (var client = new APIClientProvider().Client)
             {
-                var response = await client.GetAsync($"/api/product/1");
+                var response = await client.GetAsync($"/api/product/{fixture.TestProduct.Id}");
                 string responseBody = await response.Content.ReadAsStringAsync();
                 Product singleProduct = JsonConvert.DeserializeObject<Product>(responseBody);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
