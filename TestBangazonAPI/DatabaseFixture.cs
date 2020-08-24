@@ -1,25 +1,33 @@
 ﻿using BangazonAPI.Models;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace TestBangazonAPI
 {
+
     public class DatabaseFixture : IDisposable
     {
-
         private readonly string ConnectionString = @$"Server=localhost\SQLEXPRESS;Database=BangazonAPI;Trusted_Connection=True;";
-
-        public Customer TestCustomer { get; set; }
+        public PaymentType AddDelTestType { get; set; }
+        public PaymentType EditType { get; set; }
 
         public DatabaseFixture()
         {
-
-            Customer newCustomer = new Customer
+            PaymentType newType = new PaymentType
             {
-                FirstName = "Test",
-                LastName = "Customer",
-                CreationDate = new DateTime(2008, 3, 1, 7, 0, 0),
-                LastActiveDate = new DateTime(2008, 3, 1, 7, 0, 0)
+                AcctNumber = "9876543210",
+                Name = "integration test payment type",
+                CustomerId = 2
+            };
+
+            PaymentType editType = new PaymentType
+            {
+                AcctNumber = "6789012345",
+                Name = "integration test payment type",
+                CustomerId = 2
             };
 
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -27,21 +35,27 @@ namespace TestBangazonAPI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @$"INSERT INTO Customer (FirstName, LastName, CreationDate, LastActiveDate)
+                    cmd.CommandText = @$"INSERT INTO PaymentType (AcctNumber, Name, CustomerId)
                                         OUTPUT INSERTED.Id
-                                        VALUES ('{newCustomer.FirstName}', '{newCustomer.LastName}', '{newCustomer.CreationDate}', '{newCustomer.LastActiveDate}')";
-
-
+                                        VALUES ('{newType.AcctNumber}', '{newType.Name}', '{newType.CustomerId}')";
                     int newId = (int)cmd.ExecuteScalar();
 
-                    newCustomer.Id = newId;
+                    newType.Id = newId;
 
-                    TestCustomer = newCustomer;
+                    AddDelTestType = newType;
+
+                    cmd.CommandText = @$"INSERT INTO PaymentType (AcctNumber, Name, CustomerId)
+                                        OUTPUT INSERTED.Id
+                                        VALUES ('{editType.AcctNumber}', '{editType.Name}', '{editType.CustomerId}')";
+                    int newEditId = (int)cmd.ExecuteScalar();
+
+                    editType.Id = newEditId;
+
+                    EditType = editType;
+
                 }
             }
-
         }
-
         public void Dispose()
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -49,13 +63,12 @@ namespace TestBangazonAPI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @$"DELETE FROM Customer WHERE LastName ='Customer'";
-
+                    cmd.CommandText = @$"DELETE FROM PaymentType WHERE Name like '%integration test payment type%'";
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-
-
     }
 }
+
+

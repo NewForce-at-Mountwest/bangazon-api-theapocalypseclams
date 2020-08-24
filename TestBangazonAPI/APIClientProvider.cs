@@ -1,21 +1,21 @@
 ﻿using BangazonAPI;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using Xunit;
 
 namespace TestBangazonAPI
 {
-    public class APIClientProvider : IClassFixture<WebApplicationFactory<Startup>>
+    class APIClientProvider : IClassFixture<WebApplicationFactory<Startup>>
     {
         public HttpClient Client { get; private set; }
         private readonly WebApplicationFactory<Startup> _factory = new WebApplicationFactory<Startup>();
-
         public APIClientProvider()
         {
             Client = _factory.CreateClient();
         }
-
-        [Fact]
         public void Dispose()
         {
             _factory?.Dispose();
