@@ -26,9 +26,6 @@ x64/
 ipch/
 *.aps
 *.ncb
-
-=======
->>>>>>> 96e5f232be906b4eda4d13ee9b2ecc1ba5ebbb6f
 # Visual Studio profiler
 *.psess
 *.vsp
