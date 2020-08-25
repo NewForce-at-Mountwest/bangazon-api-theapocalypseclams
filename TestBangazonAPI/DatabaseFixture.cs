@@ -1,9 +1,6 @@
 ﻿using BangazonAPI.Models;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 namespace TestBangazonAPI
 {
     public class DatabaseFixture : IDisposable
@@ -13,6 +10,8 @@ namespace TestBangazonAPI
         public Product TestEditProduct { get; set; }
         public PaymentType AddDelTestType { get; set; }
         public PaymentType EditType { get; set; }
+        public Customer TestCustomer { get; set; }
+
         public DatabaseFixture()
         {
             Product newProduct = new Product
@@ -63,6 +62,14 @@ namespace TestBangazonAPI
                 CustomerId = 2
             };
 
+            Customer newCustomer = new Customer
+            {
+                FirstName = "Test",
+                LastName = "Customer",
+                CreationDate = new DateTime(2008, 3, 1, 7, 0, 0),
+                LastActiveDate = new DateTime(2008, 3, 1, 7, 0, 0)
+            };
+
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
@@ -95,6 +102,24 @@ namespace TestBangazonAPI
 
                 }
             }
+
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @$"INSERT INTO Customer (FirstName, LastName, CreationDate, LastActiveDate)
+                                        OUTPUT INSERTED.Id
+                                        VALUES ('{newCustomer.FirstName}', '{newCustomer.LastName}', '{newCustomer.CreationDate}', '{newCustomer.LastActiveDate}')";
+
+
+                    int newId = (int)cmd.ExecuteScalar();
+
+                    newCustomer.Id = newId;
+
+                    TestCustomer = newCustomer;
+                }
+            }
         }
         public void Dispose()
         {
@@ -106,11 +131,10 @@ namespace TestBangazonAPI
                     cmd.CommandText = @$"DELETE FROM Product WHERE Title='Test Product'";
                     cmd.CommandText = @$"DELETE FROM PaymentType WHERE Name like '%integration test payment type%'";
                     cmd.ExecuteNonQuery();
+                    cmd.CommandText = @$"DELETE FROM Customer WHERE LastName ='Customer'";
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
     }
 }
-
-
-
