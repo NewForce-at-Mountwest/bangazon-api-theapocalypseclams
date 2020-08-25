@@ -1,9 +1,6 @@
 ﻿using BangazonAPI.Models;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace TestBangazonAPI
 {
@@ -13,6 +10,7 @@ namespace TestBangazonAPI
         private readonly string ConnectionString = @$"Server=localhost\SQLEXPRESS;Database=BangazonAPI;Trusted_Connection=True;";
         public PaymentType AddDelTestType { get; set; }
         public PaymentType EditType { get; set; }
+        public Customer TestCustomer { get; set; }
 
         public DatabaseFixture()
         {
@@ -28,6 +26,14 @@ namespace TestBangazonAPI
                 AcctNumber = "6789012345",
                 Name = "integration test payment type",
                 CustomerId = 2
+            };
+
+            Customer newCustomer = new Customer
+            {
+                FirstName = "Test",
+                LastName = "Customer",
+                CreationDate = new DateTime(2008, 3, 1, 7, 0, 0),
+                LastActiveDate = new DateTime(2008, 3, 1, 7, 0, 0)
             };
 
             using (SqlConnection conn = new SqlConnection(ConnectionString))
@@ -55,6 +61,24 @@ namespace TestBangazonAPI
 
                 }
             }
+
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @$"INSERT INTO Customer (FirstName, LastName, CreationDate, LastActiveDate)
+                                        OUTPUT INSERTED.Id
+                                        VALUES ('{newCustomer.FirstName}', '{newCustomer.LastName}', '{newCustomer.CreationDate}', '{newCustomer.LastActiveDate}')";
+
+
+                    int newId = (int)cmd.ExecuteScalar();
+
+                    newCustomer.Id = newId;
+
+                    TestCustomer = newCustomer;
+                }
+            }
         }
         public void Dispose()
         {
@@ -65,10 +89,10 @@ namespace TestBangazonAPI
                 {
                     cmd.CommandText = @$"DELETE FROM PaymentType WHERE Name like '%integration test payment type%'";
                     cmd.ExecuteNonQuery();
+                    cmd.CommandText = @$"DELETE FROM Customer WHERE LastName ='Customer'";
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
     }
 }
-
-
